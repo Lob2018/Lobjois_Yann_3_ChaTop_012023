@@ -12,13 +12,13 @@ import fr.hatclic.chatop.model.Users;
 import fr.hatclic.chatop.service.UsersService;
 
 @RestController
-@RequestMapping("/api/user/")
+@RequestMapping("/api/user")
 public class UsersController {
 
 	@Autowired
 	private UsersService usersService;
 
-	@GetMapping("{userId}")
+	@GetMapping("/{userId}")
 	public Users getUserAccount(@PathVariable("userId") Long id, Model model) {
 		return usersService.findUserById(id).get();
 	}

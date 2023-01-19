@@ -9,24 +9,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.hatclic.chatop.model.Messages;
-import fr.hatclic.chatop.service.MessagesService;
+import fr.hatclic.chatop.model.Users;
+import fr.hatclic.chatop.service.UsersService;
 
 @RestController
-@RequestMapping("/messages")
-
-public class MessagesController {
+@RequestMapping("/api/auth")
+public class AuthController {
 
 	@Autowired
-	private MessagesService messagesService;
+	private UsersService usersService;
 
-	@PostMapping("/")
+	@PostMapping("/register")
 	@ResponseBody
-	public HashMap<String, String> createUser(@RequestBody Messages message) {
-		messagesService.createMessage(message);
+	public HashMap<String, String> createUser(@RequestBody Users user) {
+		usersService.createUser(user);
 		HashMap<String, String> map = new HashMap<>();
-		map.put("message", "Message send with success");
+		map.put("token", "jwt");
 		return map;
 	}
+
+//	@PostMapping("/login")	
+//	@PostMapping("/me")
 
 }
