@@ -1,7 +1,10 @@
 package fr.hatclic.chatop.model;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,8 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
@@ -22,10 +24,6 @@ public class Rentals {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumns({ @JoinColumn(name = "owner_id", referencedColumnName = "id"), })
-//	private Users user;
-
 	@Column(name = "name", length = 255)
 	@Size(max = 255)
 	private String name;
@@ -33,8 +31,8 @@ public class Rentals {
 	@Column(name = "surface")
 	private double surface;
 
-	@Column(name = "prix")
-	private double prix;
+	@Column(name = "price")
+	private double price;
 
 	@Column(name = "picture", length = 255)
 	@Size(max = 255)
@@ -44,11 +42,21 @@ public class Rentals {
 	@Size(max = 2000)
 	private String description;
 
-	@Column(name = "created_at")
+	@Column(name = "owner_id", nullable = false)
+	private Long owner_id;
+
+	@Column(name = "created_at", updatable = false)
 	private ZonedDateTime created_at;
 
 	@Column(name = "updated_at")
 	private ZonedDateTime updated_at;
+
+	/**
+	 * Messages for this rental
+	 */
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@JoinColumn(name = "rental_id")
+	List<Messages> messages = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -74,12 +82,12 @@ public class Rentals {
 		this.surface = surface;
 	}
 
-	public double getPrix() {
-		return prix;
+	public double getPrice() {
+		return price;
 	}
 
-	public void setPrix(double prix) {
-		this.prix = prix;
+	public void setPrice(double prix) {
+		this.price = prix;
 	}
 
 	public String getPicture() {
@@ -114,17 +122,25 @@ public class Rentals {
 		this.updated_at = updated_at;
 	}
 
-//	public Users getUser() {
-//		return user;
-//	}
-//
-//	public void setUser(Users user) {
-//		this.user = user;
-//	}
-	
+	public List<Messages> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Messages> messages) {
+		this.messages = messages;
+	}
+
+	public Long getOwner_id() {
+		return owner_id;
+	}
+
+	public void setOwner_id(Long owner_id) {
+		this.owner_id = owner_id;
+	}
+
 	@Override
 	public String toString() {
-		return "rentals{" + "id=" + id + ", name='" + name + '\'' + ", surface='" + surface + '\'' + ", prix='" + prix
+		return "rentals{" + "id=" + id + ", name='" + name + '\'' + ", surface='" + surface + '\'' + ", price='" + price
 				+ '\'' + ", picture='" + picture + '\'' + ", description='" + description + '\'' + ", created_at='"
 				+ created_at + '\'' + ", updated_at='" + updated_at + '\'' + '}';
 	}

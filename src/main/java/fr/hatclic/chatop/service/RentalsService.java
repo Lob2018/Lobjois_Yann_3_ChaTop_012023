@@ -3,10 +3,12 @@ package fr.hatclic.chatop.service;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import fr.hatclic.chatop.model.Rentals;
 import fr.hatclic.chatop.repository.RentalsRepository;
 
+@Service
 public class RentalsService {
 
 	@Autowired
