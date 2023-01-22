@@ -20,7 +20,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/auth")
-@SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Auth", description = "The auth API. Contains all the operations that can be performed on a authentication.")
 public class AuthController {
 
@@ -28,7 +27,7 @@ public class AuthController {
 	private UsersService usersService;
 
 	@PostMapping("/register")
-	@ResponseBody
+	@ResponseBody	
 	public HashMap<String, String> register(@RequestBody Users user) {
 		final HashMap<String, String> map = new HashMap<>();
 		try {
@@ -60,6 +59,7 @@ public class AuthController {
 	}
 
 	@GetMapping("/me")
+	@SecurityRequirement(name = "bearerAuth")
 	public HashMap<String, String> me(@RequestHeader(name = "Authorization") String token) {
 		// header have got a token
 		// the token is valid
