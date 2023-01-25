@@ -7,6 +7,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -17,13 +19,16 @@ public class Messages {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank
 	@Column(name = "message", length = 2000)
 	@Size(max = 2000)
 	private String message;
 
+	@NotNull
 	@Column(name = "rental_id", nullable = false)
 	private Long rental_id;
 
+	@NotNull
 	@Column(name = "user_id", nullable = false)
 	private Long user_id;
 

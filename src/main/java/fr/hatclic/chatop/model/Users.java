@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -24,6 +25,7 @@ public class Users {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank
 	@Column(name = "email", length = 255)
 	@Size(max = 255)
 	private String email;
@@ -32,6 +34,7 @@ public class Users {
 	@Size(max = 255)
 	private String name;
 
+	@NotBlank
 	@Column(name = "password", length = 255)
 	@Size(max = 255)
 	private String password;

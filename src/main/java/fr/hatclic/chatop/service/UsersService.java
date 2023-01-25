@@ -15,10 +15,15 @@ public class UsersService {
 	private UsersRepository usersRepository;
 
 	public Users createUser(Users user) {
+		if (userPropertyIsNull(user))
+			throw new Error();
 		return usersRepository.save(user);
 	}
 
 	public Optional<Users> findUserById(final Long id) {
+		if (id == null) {
+			throw new Error();
+		}
 		return usersRepository.findById(id);
 	}
 
@@ -27,15 +32,33 @@ public class UsersService {
 	}
 
 	public Users updateUser(Users user) {
+		if (userPropertyIsNull(user) || user.getId() == null)
+			throw new Error();
 		return usersRepository.save(user);
 	}
 
 	public void deleteUserById(final Long id) {
+		if (id == null) {
+			throw new Error();
+		}
 		usersRepository.deleteById(id);
 	}
 
 	public Optional<Users> findByEmail(final String email) {
+		if (email == null || email.trim().length() == 0) {
+			throw new Error();
+		}
 		return usersRepository.findByEmail(email);
 	};
+
+	public boolean userPropertyIsNull(Users user) {
+		if (user == null || user.getEmail().trim().length() == 0 || user.getName().trim().length() == 0
+				|| user.getPassword().trim().length() == 0
+
+		) {
+			return true;
+		}
+		return false;
+	}
 
 }

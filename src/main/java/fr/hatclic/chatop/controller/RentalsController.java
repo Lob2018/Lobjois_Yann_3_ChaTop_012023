@@ -1,24 +1,32 @@
+
 package fr.hatclic.chatop.controller;
 
 import java.time.ZonedDateTime;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
+import fr.hatclic.chatop.dto.RentalsDto;
 import fr.hatclic.chatop.model.Rentals;
+import fr.hatclic.chatop.model.Users;
 import fr.hatclic.chatop.service.RentalsService;
+import fr.hatclic.chatop.service.UsersService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -31,56 +39,116 @@ public class RentalsController {
 	@Autowired
 	private RentalsService rentalsService;
 
+	@Autowired
+	private UsersService usersService;
+
+	@Autowired
+	private ModelMapper modelMapper;
+
+	private RentalsDto convertToDto(final Rentals rental) {
+		RentalsDto rentalDto = modelMapper.map(rental, RentalsDto.class);
+		return rentalDto;
+	}
+
+	private Rentals convertToEntity(final RentalsDto rentalDto) {
+		Rentals rental = modelMapper.map(rentalDto, Rentals.class);
+		return rental;
+	}
+
+	/**
+	 * Get all the rentals
+	 * 
+	 * @return The HTTP response
+	 */
 	@GetMapping("")
-	public Iterable<Rentals> getAll() {
-		List<Rentals> rentalsList = (List<Rentals>) rentalsService.getAllRentals();
-		return rentalsList.isEmpty() ? Collections.emptyList() : rentalsList;
+	public ResponseEntity<Object> getAll() {
+		final List<RentalsDto> rentalsDtoList = ((Collection<Rentals>) rentalsService.getAllRentals()).stream()
+				.map(this::convertToDto).collect(Collectors.toList());
+		final HashMap<String, List<RentalsDto>> map = new HashMap<>();
+		map.put("rentals", rentalsDtoList);
+		return rentalsDtoList.isEmpty() ? ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null)
+				: ResponseEntity.ok().body(map);
 	}
 
+	/**
+	 * Get a rental by id
+	 * 
+	 * @param id The rental id
+	 * @return The HTTP response
+	 */
 	@GetMapping("/{rentalId}")
-	public Rentals get(@PathVariable("rentalId") Long id) {
-		return rentalsService.findRentalById(id).get();
+	public ResponseEntity<Object> get(@PathVariable("rentalId") Long id) {
+		try {
+			RentalsDto rentalDto = convertToDto(rentalsService.findRentalById(id).get());
+			return ResponseEntity.ok().body(rentalDto);
+		} catch (Error ex) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new HashMap<>());
+		}
 	}
 
+	/**
+	 * Create a rental
+	 * 
+	 * @param token       The user token
+	 * @param picture     The rental picture (optional)
+	 * @param name        The name of the rental
+	 * @param surface     The surface of the rental
+	 * @param price       The price of the rental
+	 * @param description The description of the rental
+	 * @return The HTTP response
+	 */
 	@PostMapping("")
 	@ResponseBody
-	public HashMap<String, String> create(@RequestParam("picture") MultipartFile picture,
-			@RequestParam("name") String name, @RequestParam("surface") double surface,
-			@RequestParam("description") String description, @RequestParam("owner_id") Long owner_id) {
-		Rentals rental = new Rentals();
-		final HashMap<String, String> map = new HashMap<>();
+	public ResponseEntity<Object> create(@RequestHeader(name = "Authorization") String token,
+			@RequestParam(required = false) MultipartFile picture, @RequestParam("name") String name,
+			@RequestParam("surface") double surface, @RequestParam("price") double price,
+			@RequestParam("description") String description) {
+		final String mail = SecurityContextHolder.getContext().getAuthentication().getName();
+		final Optional<Users> user = usersService.findByEmail(mail);
 		try {
-			rental.setName(name);
-			rental.setSurface(surface);
-			rental.setDescription(description);
-			rental.setOwner_id(owner_id);
-			rental.setCreated_at(ZonedDateTime.now());
-			rental.setUpdated_at(ZonedDateTime.now());
-			rental.setPicture(picture.getOriginalFilename());
-			rentalsService.createRental(rental);
-			map.put("token", "jwt");
-			return map;
-//			return ResponseEntity.ok(map.toString());
+			RentalsDto rental = new RentalsDto();
+			rental.setRentalsDto(null, name, surface, price, picture.getOriginalFilename(), description,
+					user.get().getId(), ZonedDateTime.now(), ZonedDateTime.now());
+			rentalsService.createRental(convertToEntity(rental));
+			final HashMap<String, String> map = new HashMap<>();
+			map.put("message", "Rental created !");
+			return ResponseEntity.ok().body(map);
 		} catch (Error ex) {
-			return map;
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new HashMap<>());
 		}
 	}
 
+	/**
+	 * Update a rental
+	 * 
+	 * @param id          The rental id
+	 * @param token       The user token
+	 * @param picture     The rental picture (optional)
+	 * @param name        The name of the rental
+	 * @param surface     The surface of the rental
+	 * @param price       The price of the rental
+	 * @param description The description of the rental
+	 * @return The HTTP response
+	 */
 	@PutMapping("/{rentalId}")
 	@ResponseBody
-	public HashMap<String, String> put(@PathVariable("rentalId") Long id, @ModelAttribute Rentals rental) {
-		final HashMap<String, String> map = new HashMap<>();
-		rental.setId(id);
-		rental.setUpdated_at(ZonedDateTime.now());
+	public ResponseEntity<Object> put(@PathVariable("rentalId") Long id,
+			@RequestHeader(name = "Authorization") String token, @RequestParam(required = false) MultipartFile picture,
+			@RequestParam("name") String name, @RequestParam("surface") double surface,
+			@RequestParam("price") double price, @RequestParam("description") String description) {
+		final String mail = SecurityContextHolder.getContext().getAuthentication().getName();
+		final Optional<Users> user = usersService.findByEmail(mail);
 		try {
-			rentalsService.updateRental(rental);
-			map.put("token", "jwt");
-			return map;
-		} catch (Error e) {
-			map.put("message", "error");
-			return map;
-		}
+			RentalsDto rental = new RentalsDto();
+			rental.setRentalsDto(id, name, surface, price, picture.getOriginalFilename(), description,
+					user.get().getId(), ZonedDateTime.now(), ZonedDateTime.now());
 
+			rentalsService.updateRental(convertToEntity(rental));
+			final HashMap<String, String> map = new HashMap<>();
+			map.put("message", "Rental updated !");
+			return ResponseEntity.ok().body(map);
+		} catch (Error ex) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new HashMap<>());
+		}
 	}
 }
