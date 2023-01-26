@@ -11,13 +11,24 @@ This project was generated with :
 
 </br>
 
-## Start the project (with Eclipse)
+## Start the project (with Eclipse IDE)
 
 </br>
 
 Git clone:
 
 > git clone https://github.com/Lob2018/Lobjois_Yann_3_ChaTop_012023
+
+Add the user's environment variables (batch file with command prompt)
+
+> Double clic on CHATOP_CREATE_ENVIRONMENT_VAR.bat and set the variables
+
+*Those environment variables are needed to use this API (CHATOP_DROP_ENVIRONMENT_VAR.bat removes them)*
+
+
+Start the API :
+
+> Open Eclipse IDE
 
 > Right click on folder > Run as > Maven install (install Maven dependencies)
 
@@ -39,15 +50,11 @@ Git clone:
 
 ### MySQL
 
-SQL script for creating the schema is available `src/main/resources/data.sql`
-
 > Schema name : chatop
 
 > Port : 3306
 
-> Username : root
-
-> Password : yann
+> SQL script for creating the schema is available `src/main/resources/data.sql`
 
 </br>
 
@@ -83,4 +90,14 @@ Swagger UI in HTML is available `http://localhost:3001/swagger-ui/index.html#/`
 
 *Postman : The token is in the Body of the response*
 
+</br>
 
+## User environment variables details
+
+> Variable for MySQL password : CHATOP_YL_API_MYSQL_PASSWORD
+
+> Variable for MySQL username : CHATOP_YL_API_MYSQL_USERNAME
+
+> Variable for the JWT issuer : CHATOP_YL_API_JWTISSUER
+
+> Variable for the JWT secret : CHATOP_YL_API_JWTSECRET

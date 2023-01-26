@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
@@ -20,17 +21,18 @@ import static java.lang.String.format;
 @Component
 public class JwtTokenUtil {
 
-	private final String jwtSecret = "zdtlD3JK56m6wTTgsNFhqzjqP";
-	private final String jwtIssuer = "fr.romain";
+	// The user's environment variables
+	@Value("${CHATOP_YL_API_JWTSECRET}")
+	private String jwtSecret;
+	@Value("${CHATOP_YL_API_JWTISSUER}")
+	private String jwtIssuer;
 
 	private final Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
 
 	public final String generateAccessToken(final User autendicatedUser) {
-		return Jwts.builder().setSubject(format("%s", 
-				autendicatedUser.getUsername()))
-				.setIssuer(jwtIssuer)
-				.setIssuedAt(new Date())
-				.setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) // 1 week
+		return Jwts.builder().setSubject(format("%s", autendicatedUser.getUsername())).setIssuer(jwtIssuer)
+				.setIssuedAt(new Date()).setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) // 1
+																														// week
 				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
 	}
 
