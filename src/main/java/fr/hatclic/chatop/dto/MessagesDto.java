@@ -58,5 +58,17 @@ public class MessagesDto {
 	public void setUpdated_at(ZonedDateTime updated_at) {
 		this.updated_at = updated_at;
 	}
+	
+	@Override
+	public String toString() {
+		return "messagesDto{"
+	+ "id=" + id
+	+ '\'' + ", message='" + message 
+	+ '\'' + ", rental_id='" + rental_id  
+	+ '\'' + ", user_id='" + user_id 
+	+ '\'' + ", created_at='" + created_at 
+	+ '\'' + ", updated_at=" + updated_at 
+	+ '}';
+	}
 
 }

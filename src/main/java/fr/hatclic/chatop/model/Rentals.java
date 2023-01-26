@@ -140,9 +140,16 @@ public class Rentals {
 
 	@Override
 	public String toString() {
-		return "rentals{" + "id=" + id + ", name='" + name + '\'' + ", surface='" + surface + '\'' + ", price='" + price
-				+ '\'' + ", picture='" + picture + '\'' + ", description='" + description + '\'' + ", created_at='"
-				+ created_at + '\'' + ", updated_at='" + updated_at + '\'' + '}';
+		return "rentals{" 
+	+ "id=" + id 
+	+ '\'' + ", name='" + name 
+	+ '\'' + ", surface='" + surface 
+	+ '\'' + ", price='" + price
+	+ '\'' + ", picture='" + picture 
+	+ '\'' + ", description='" + description 
+	+ '\'' + ", created_at='" + created_at 
+	+ '\'' + ", updated_at='" + updated_at 
+	+ '\'' + '}';
 	}
 
 }

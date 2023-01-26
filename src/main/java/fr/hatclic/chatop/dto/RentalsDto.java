@@ -16,10 +16,12 @@ public class RentalsDto {
 
 	public void setRentalsDto(Long id, String name, double surface, double price, String picture, String description,
 			Long owner_id, ZonedDateTime created_at, ZonedDateTime updated_at) {
+		this.id = id;
 		this.name = name;
 		this.surface = surface;
 		this.price = price;
-		this.picture = picture;
+		if (picture != null)
+			this.picture = picture;
 		this.description = description;
 		this.owner_id = owner_id;
 		this.created_at = created_at;
@@ -96,5 +98,13 @@ public class RentalsDto {
 
 	public void setUpdated_at(ZonedDateTime updated_at) {
 		this.updated_at = updated_at;
+	}
+
+	@Override
+	public String toString() {
+		return "rentals{" + "id=" + id + '\'' + ", name='" + name + '\'' + ", surface='" + surface + '\'' + ", price='"
+				+ price + '\'' + ", picture='" + picture + '\'' + ", description='" + description + '\''
+				+ ", owner_id='" + owner_id + '\'' + ", created_at='" + created_at + '\'' + ", updated_at=" + updated_at
+				+ '}';
 	}
 }

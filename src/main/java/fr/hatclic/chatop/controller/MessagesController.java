@@ -3,6 +3,7 @@ package fr.hatclic.chatop.controller;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import fr.hatclic.chatop.dto.MessagesDto;
 import fr.hatclic.chatop.model.Messages;
 import fr.hatclic.chatop.service.MessagesService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -29,20 +31,28 @@ public class MessagesController {
 	@Autowired
 	private MessagesService messagesService;
 
+	@Autowired
+	private ModelMapper modelMapper;
+
+	private Messages convertToEntity(final MessagesDto messageDto) {
+		Messages message = modelMapper.map(messageDto, Messages.class);
+		return message;
+	}
+
 	/**
 	 * Send a message to a user for his rental
 	 * 
 	 * @param message The message to send
 	 * @return The HTTP response
 	 */
-	@PostMapping("/")
+	@PostMapping("/**")
 	@ResponseBody
-	public ResponseEntity<Object> message(@RequestBody @Valid Messages message) {
+	public ResponseEntity<Object> message(@RequestBody @Valid MessagesDto message) {
 		final HashMap<String, Object> map = new HashMap<>();
 		try {
 			message.setCreated_at(ZonedDateTime.now());
 			message.setUpdated_at(ZonedDateTime.now());
-			messagesService.createMessage(message);
+			messagesService.createMessage(convertToEntity(message));
 			map.put("message", "Message send with success");
 			return ResponseEntity.ok().body(map);
 		} catch (Error ex) {

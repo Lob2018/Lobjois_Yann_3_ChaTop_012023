@@ -43,7 +43,7 @@ public class MessagesService {
 	}
 
 	public boolean messageIsNull(Messages message) {
-		if (message == null || message.getRental_id() == null || message.getUser_id() == null
+		if (message == null || message.getUser_id() == null || message.getRental_id() == null
 				|| message.getMessage().trim().length() == 0) {
 			return true;
 		}

@@ -25,11 +25,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
 		Optional<Users> user = userRepository.findByEmail(userEmail);
+
+		if (user.isEmpty())
+			throw new UsernameNotFoundException(userEmail + " not found");
+
 		// Use the following line if password are not encrypted in database.
 		user.get().setPassword(new BCryptPasswordEncoder().encode(user.get().getPassword()));
-		return new org.springframework.security.core.userdetails.User(
-				user.get().getEmail(), 
-				user.get().getPassword(),
+
+		return new org.springframework.security.core.userdetails.User(user.get().getEmail(), user.get().getPassword(),
 				getGrantedAuthorities("ROLE_USER"));
 	}
 

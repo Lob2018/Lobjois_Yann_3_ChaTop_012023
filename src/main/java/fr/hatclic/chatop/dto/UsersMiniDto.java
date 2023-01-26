@@ -49,5 +49,16 @@ public class UsersMiniDto {
 	public void setUpdated_at(ZonedDateTime updated_at) {
 		this.updated_at = updated_at;
 	}
+	
+	@Override
+	public String toString() {
+		return "usersMiniDto{"
+	+ "id=" + id
+	+ '\'' + ", email='" + email 
+	+ '\'' + ", name='" + name 
+	+ '\'' + ", created_at='" + created_at 
+	+ '\'' + ", updated_at=" + updated_at 
+	+ '}';
+	}
 
 }

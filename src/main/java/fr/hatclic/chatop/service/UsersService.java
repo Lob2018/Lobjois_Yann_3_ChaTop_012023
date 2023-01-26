@@ -53,9 +53,7 @@ public class UsersService {
 
 	public boolean userPropertyIsNull(Users user) {
 		if (user == null || user.getEmail().trim().length() == 0 || user.getName().trim().length() == 0
-				|| user.getPassword().trim().length() == 0
-
-		) {
+				|| user.getPassword().trim().length() == 0) {
 			return true;
 		}
 		return false;

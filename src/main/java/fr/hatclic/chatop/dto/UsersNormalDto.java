@@ -57,4 +57,16 @@ public class UsersNormalDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	@Override
+	public String toString() {
+		return "usersNormalDto{"
+	+ "id=" + id
+	+ '\'' + ", email='" + email 
+	+ '\'' + ", name='" + name 
+	+ '\'' + ", password='"+ password 
+	+ '\'' + ", created_at='" + created_at 
+	+ '\'' + ", updated_at=" + updated_at 
+	+ '}';
+	}
 }

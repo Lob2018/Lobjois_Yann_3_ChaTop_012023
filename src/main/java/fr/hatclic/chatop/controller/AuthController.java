@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.hatclic.chatop.configuration.JwtTokenUtil;
+import fr.hatclic.chatop.dto.UsersLoginDto;
+import fr.hatclic.chatop.dto.UsersMiniDto;
 import fr.hatclic.chatop.dto.UsersNormalDto;
 import fr.hatclic.chatop.model.Users;
 import fr.hatclic.chatop.service.UsersService;
@@ -69,14 +71,17 @@ public class AuthController {
 	 */
 	@PostMapping("/register")
 	@ResponseBody
-	public ResponseEntity<Object> register(@RequestBody @Valid UsersNormalDto user,
-			@RequestHeader(name = "Authorization") String token) {
+	public ResponseEntity<Object> register(@RequestBody @Valid UsersNormalDto user) {
 		final HashMap<String, String> map = new HashMap<>();
 		try {
 			user.setCreated_at(ZonedDateTime.now());
 			user.setUpdated_at(ZonedDateTime.now());
-			// Block rentals and sent messages
 			usersService.createUser(convertToEntity(user));
+			// Get and return the new token
+			Authentication authenticate = authenticationManager
+					.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+			User autendicatedUser = (User) authenticate.getPrincipal();
+			String token = jwtTokenUtil.generateAccessToken(autendicatedUser);
 			map.put("token", token);
 			return ResponseEntity.ok().body(map);
 		} catch (Error ex) {
@@ -103,17 +108,17 @@ public class AuthController {
 	}
 
 	/**
-	 * Get and return token from user credentials
+	 * User login
 	 * 
 	 * @param user User login data
 	 * @return The HTTP response
 	 */
 	@PostMapping("/login")
-	public ResponseEntity<Object> login(@RequestBody @Valid Users user) {
+	public ResponseEntity<Object> login(@RequestBody @Valid UsersLoginDto user) {
 		final HashMap<String, String> map = new HashMap<>();
 		try {
 			Authentication authenticate = authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+					.authenticate(new UsernamePasswordAuthenticationToken(user.getLogin()==null?user.getEmail():user.getLogin(), user.getPassword()));
 			User autendicatedUser = (User) authenticate.getPrincipal();
 			String token = jwtTokenUtil.generateAccessToken(autendicatedUser);
 			map.put("token", token);

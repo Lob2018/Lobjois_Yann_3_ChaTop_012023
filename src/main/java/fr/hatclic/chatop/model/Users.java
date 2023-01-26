@@ -125,8 +125,13 @@ public class Users {
 
 	@Override
 	public String toString() {
-		return "messages{" + "id=" + id + ", email='" + email + '\'' + ", name='" + name + '\'' + ", password='"
-				+ password + '\'' + ", created_at='" + created_at + '\'' + ", updated_at=" + updated_at + '}';
+		return "user{" 
+	+ "id=" + id 
+	+ ", email='" + email + '\'' 
+	+ ", name='" + name + '\'' 
+	+ ", password='" + password + '\'' 
+	+ ", created_at='" + created_at + '\'' 
+	+ ", updated_at=" + updated_at + '}';
 	}
 
 }

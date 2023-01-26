@@ -88,8 +88,13 @@ public class Messages {
 
 	@Override
 	public String toString() {
-		return "messages{" + "id=" + id + ", message='" + message + '\'' + ", created_at='" + created_at + '\''
-				+ ", updated_at=" + updated_at + '}';
+		return "messages{" 
+	+ "id=" + id 
+	+ '\'' + ", message='" + message 
+	+ '\'' + ", rental_id='" + rental_id 
+	+ '\'' + ", user_id='" + user_id 
+	+ '\'' + ", created_at='" + created_at 
+	+ '\''+ ", updated_at=" + updated_at + '}';
 	}
 
 }
