@@ -47,12 +47,13 @@ public class MessagesController {
 	 */
 	@PostMapping("/**")
 	@ResponseBody
-	public ResponseEntity<Object> message(@RequestBody @Valid MessagesDto message) {
+	public ResponseEntity<Object> message(@RequestBody @Valid MessagesDto messageDto) {
 		final HashMap<String, Object> map = new HashMap<>();
 		try {
+			Messages message = convertToEntity(messageDto);
 			message.setCreated_at(ZonedDateTime.now());
 			message.setUpdated_at(ZonedDateTime.now());
-			messagesService.createMessage(convertToEntity(message));
+			messagesService.createMessage(message);
 			map.put("message", "Message send with success");
 			return ResponseEntity.ok().body(map);
 		} catch (Error ex) {
