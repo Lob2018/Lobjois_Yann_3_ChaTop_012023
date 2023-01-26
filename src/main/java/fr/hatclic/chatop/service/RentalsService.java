@@ -13,37 +13,37 @@ public class RentalsService {
 	@Autowired
 	private RentalsRepository rentalsRepository;
 
-	public Rentals createRental(Rentals rental) {
+	public final Rentals createRental(final Rentals rental) {
 		if (rentalIsNull(rental))
 			throw new Error();
 		return rentalsRepository.save(rental);
 	}
 
-	public Optional<Rentals> findRentalById(final Long id) {
+	public final Optional<Rentals> findRentalById(final Long id) {
 		if (id == null) {
 			throw new Error();
 		}
 		return rentalsRepository.findById(id);
 	}
 
-	public Iterable<Rentals> getAllRentals() {
+	public final Iterable<Rentals> getAllRentals() {
 		return rentalsRepository.findAll();
 	}
 
-	public Rentals updateRental(Rentals rental) {
+	public final Rentals updateRental(final Rentals rental) {
 		if (rentalIsNull(rental) || rental.getId() == null)
 			throw new Error();
 		return rentalsRepository.save(rental);
 	}
 
-	public void deleteRentalById(final Long id) {
+	public final void deleteRentalById(final Long id) {
 		if (id == null) {
 			throw new Error();
 		}
 		rentalsRepository.deleteById(id);
 	}
 
-	public boolean rentalIsNull(Rentals rental) {
+	public final boolean rentalIsNull(final Rentals rental) {
 		if (rental == null || rental.getName().trim().length() == 0 || rental.getSurface() == 0.0
 				|| rental.getPrice() == 0.0 || rental.getDescription().trim().length() == 0
 				|| rental.getOwner_id() == null) {

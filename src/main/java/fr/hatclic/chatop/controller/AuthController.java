@@ -1,10 +1,8 @@
 package fr.hatclic.chatop.controller;
 
-import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import fr.hatclic.chatop.configuration.JwtTokenUtil;
 import fr.hatclic.chatop.dto.UserRegisterDto;
 import fr.hatclic.chatop.dto.UsersLoginDto;
@@ -51,14 +48,12 @@ public class AuthController {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	private UsersNormalDto convertToDto(final Users user) {
-		UsersNormalDto userNormalDto = modelMapper.map(user, UsersNormalDto.class);
-		return userNormalDto;
+	private final UsersNormalDto convertToDto(final Users user) {
+		return modelMapper.map(user, UsersNormalDto.class);
 	}
 
-	private Users convertToEntity(final UserRegisterDto userRegisterDto) {
-		Users user = modelMapper.map(userRegisterDto, Users.class);
-		return user;
+	private final Users convertToEntity(final UserRegisterDto userRegisterDto) {
+		return modelMapper.map(userRegisterDto, Users.class);
 	}
 
 	/**
@@ -71,18 +66,17 @@ public class AuthController {
 	 */
 	@PostMapping("/register")
 	@ResponseBody
-	public ResponseEntity<Object> register(@RequestBody @Valid UserRegisterDto userRegistering) {
+	public final ResponseEntity<Object> register(@RequestBody @Valid UserRegisterDto userRegistering) {
 		final HashMap<String, String> map = new HashMap<>();
 		try {
-			Users user = convertToEntity(userRegistering);
-			user.setCreated_at(ZonedDateTime.now());
-			user.setUpdated_at(ZonedDateTime.now());
+			final Users user = convertToEntity(userRegistering);
+			final String plainPassword = user.getPassword();
 			usersService.createUser(user);
 			// Get and return the new token
-			Authentication authenticate = authenticationManager
-					.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-			User autendicatedUser = (User) authenticate.getPrincipal();
-			String token = jwtTokenUtil.generateAccessToken(autendicatedUser);
+			final Authentication authenticate = authenticationManager
+					.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), plainPassword));
+			final User autendicatedUser = (User) authenticate.getPrincipal();
+			final String token = jwtTokenUtil.generateAccessToken(autendicatedUser);
 			map.put("token", token);
 			return ResponseEntity.ok().body(map);
 		} catch (Error ex) {
@@ -98,7 +92,7 @@ public class AuthController {
 	 */
 	@GetMapping("/me")
 	@SecurityRequirement(name = "bearerAuth")
-	public ResponseEntity<Object> me(@RequestHeader(name = "Authorization") String token) {
+	public final ResponseEntity<Object> me(@RequestHeader(name = "Authorization") String token) {
 		final String mail = SecurityContextHolder.getContext().getAuthentication().getName();
 		final Optional<Users> user = usersService.findByEmail(mail);
 		if (user.isPresent()) {
@@ -115,13 +109,14 @@ public class AuthController {
 	 * @return The HTTP response
 	 */
 	@PostMapping("/login")
-	public ResponseEntity<Object> login(@RequestBody @Valid UsersLoginDto user) {
+	public final ResponseEntity<Object> login(@RequestBody @Valid UsersLoginDto user) {
 		final HashMap<String, String> map = new HashMap<>();
 		try {
-			Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-					user.getLogin() == null ? user.getEmail() : user.getLogin(), user.getPassword()));
-			User autendicatedUser = (User) authenticate.getPrincipal();
-			String token = jwtTokenUtil.generateAccessToken(autendicatedUser);
+			final Authentication authenticate = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(user.getLogin() == null ? user.getEmail() : user.getLogin(),
+							user.getPassword()));
+			final User autendicatedUser = (User) authenticate.getPrincipal();
+			final String token = jwtTokenUtil.generateAccessToken(autendicatedUser);
 			map.put("token", token);
 			return ResponseEntity.ok().body(map);
 		} catch (BadCredentialsException ex) {
@@ -139,7 +134,7 @@ public class AuthController {
 	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+	public final Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
 		return new HashMap<>();
 	}
 }

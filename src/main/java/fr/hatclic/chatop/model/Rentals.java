@@ -58,98 +58,91 @@ public class Rentals {
 	@JoinColumn(name = "rental_id")
 	List<Messages> messages = new ArrayList<>();
 
-	public Long getId() {
+	public final Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public final void setId(final Long id) {
 		this.id = id;
 	}
 
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public final void setName(final String name) {
 		this.name = name;
 	}
 
-	public double getSurface() {
+	public final double getSurface() {
 		return surface;
 	}
 
-	public void setSurface(double surface) {
+	public final void setSurface(final double surface) {
 		this.surface = surface;
 	}
 
-	public double getPrice() {
+	public final double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double prix) {
+	public final void setPrice(final double prix) {
 		this.price = prix;
 	}
 
-	public String getPicture() {
+	public final String getPicture() {
 		return picture;
 	}
 
-	public void setPicture(String picture) {
+	public final void setPicture(final String picture) {
 		this.picture = picture;
 	}
 
-	public String getDescription() {
+	public final String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public final void setDescription(final String description) {
 		this.description = description;
 	}
 
-	public ZonedDateTime getCreated_at() {
+	public final ZonedDateTime getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreated_at(ZonedDateTime created_at) {
+	public final void setCreated_at(final ZonedDateTime created_at) {
 		this.created_at = created_at;
 	}
 
-	public ZonedDateTime getUpdated_at() {
+	public final ZonedDateTime getUpdated_at() {
 		return updated_at;
 	}
 
-	public void setUpdated_at(ZonedDateTime updated_at) {
+	public final void setUpdated_at(final ZonedDateTime updated_at) {
 		this.updated_at = updated_at;
 	}
 
-	public List<Messages> getMessages() {
+	public final List<Messages> getMessages() {
 		return messages;
 	}
 
-	public void setMessages(List<Messages> messages) {
+	public final void setMessages(final List<Messages> messages) {
 		this.messages = messages;
 	}
 
-	public Long getOwner_id() {
+	public final Long getOwner_id() {
 		return owner_id;
 	}
 
-	public void setOwner_id(Long owner_id) {
+	public final void setOwner_id(final Long owner_id) {
 		this.owner_id = owner_id;
 	}
 
 	@Override
-	public String toString() {
-		return "rentals{" 
-	+ "id=" + id 
-	+ '\'' + ", name='" + name 
-	+ '\'' + ", surface='" + surface 
-	+ '\'' + ", price='" + price
-	+ '\'' + ", picture='" + picture 
-	+ '\'' + ", description='" + description 
-	+ '\'' + ", created_at='" + created_at 
-	+ '\'' + ", updated_at='" + updated_at 
-	+ '\'' + '}';
+	public final String toString() {
+		return "rentals{" + "id=" + id + '\'' + ", name='" + name + '\'' + ", surface='" + surface + '\'' + ", price='"
+				+ price + '\'' + ", picture='" + picture + '\'' + ", description='" + description + '\''
+				+ ", created_at='" + created_at + '\'' + ", updated_at='" + updated_at + '\'' + '}';
 	}
 
 }

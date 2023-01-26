@@ -1,6 +1,5 @@
 package fr.hatclic.chatop.controller;
 
-import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.modelmapper.ModelMapper;
@@ -34,8 +33,8 @@ public class MessagesController {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	private Messages convertToEntity(final MessagesDto messageDto) {
-		Messages message = modelMapper.map(messageDto, Messages.class);
+	private final Messages convertToEntity(final MessagesDto messageDto) {
+		final Messages message = modelMapper.map(messageDto, Messages.class);
 		return message;
 	}
 
@@ -47,12 +46,10 @@ public class MessagesController {
 	 */
 	@PostMapping("/**")
 	@ResponseBody
-	public ResponseEntity<Object> message(@RequestBody @Valid MessagesDto messageDto) {
+	public final ResponseEntity<Object> message(@RequestBody @Valid MessagesDto messageDto) {
 		final HashMap<String, Object> map = new HashMap<>();
 		try {
-			Messages message = convertToEntity(messageDto);
-			message.setCreated_at(ZonedDateTime.now());
-			message.setUpdated_at(ZonedDateTime.now());
+			final Messages message = convertToEntity(messageDto);
 			messagesService.createMessage(message);
 			map.put("message", "Message send with success");
 			return ResponseEntity.ok().body(map);
@@ -70,7 +67,7 @@ public class MessagesController {
 	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+	public final Map<String, String> handleValidationExceptions(final MethodArgumentNotValidException ex) {
 		return new HashMap<>();
 	}
 }

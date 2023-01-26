@@ -38,63 +38,59 @@ public class Messages {
 	@Column(name = "updated_at")
 	private ZonedDateTime updated_at;
 
-	public Long getId() {
+	public final Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public final void setId(final Long id) {
 		this.id = id;
 	}
 
-	public String getMessage() {
+	public final String getMessage() {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public final void setMessage(final String message) {
 		this.message = message;
 	}
 
-	public ZonedDateTime getCreated_at() {
+	public final ZonedDateTime getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreated_at(ZonedDateTime created_at) {
+	public final void setCreated_at(final ZonedDateTime created_at) {
 		this.created_at = created_at;
 	}
 
-	public ZonedDateTime getUpdated_at() {
+	public final ZonedDateTime getUpdated_at() {
 		return updated_at;
 	}
 
-	public void setUpdated_at(ZonedDateTime updated_at) {
+	public final void setUpdated_at(final ZonedDateTime updated_at) {
 		this.updated_at = updated_at;
 	}
 
-	public Long getRental_id() {
+	public final Long getRental_id() {
 		return rental_id;
 	}
 
-	public void setRental_id(Long rental_id) {
+	public final void setRental_id(final Long rental_id) {
 		this.rental_id = rental_id;
 	}
 
-	public Long getUser_id() {
+	public final Long getUser_id() {
 		return user_id;
 	}
 
-	public void setUser_id(Long user_id) {
+	public final void setUser_id(final Long user_id) {
 		this.user_id = user_id;
 	}
 
 	@Override
-	public String toString() {
-		return "messages{" 
-	+ "id=" + id 
-	+ '\'' + ", message='" + message 
-	+ '\'' + ", rental_id='" + rental_id 
-	+ '\'' + ", user_id='" + user_id 
-	+ '\'' + ", created_at='" + created_at 
-	+ '\''+ ", updated_at=" + updated_at + '}';
+	public final String toString() {
+		return "messages{" + "id=" + id + '\'' + ", message='" + message + '\'' + ", rental_id='" + rental_id + '\''
+				+ ", user_id='" + user_id + '\'' + ", created_at='" + created_at + '\'' + ", updated_at=" + updated_at
+				+ '}';
 	}
 
 }

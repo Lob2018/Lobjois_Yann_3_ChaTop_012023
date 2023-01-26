@@ -29,8 +29,8 @@ public class UsersController {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	private UsersMiniDto convertToDto(final Users user) {
-		UsersMiniDto userDto = modelMapper.map(user, UsersMiniDto.class);
+	private final UsersMiniDto convertToDto(final Users user) {
+		final UsersMiniDto userDto = modelMapper.map(user, UsersMiniDto.class);
 		return userDto;
 	}
 
@@ -41,9 +41,9 @@ public class UsersController {
 	 * @return The HTTP response
 	 */
 	@GetMapping("/{userId}")
-	public ResponseEntity<Object> getUserAccount(@PathVariable("userId") Long id) {
+	public final ResponseEntity<Object> getUserAccount(@PathVariable("userId") Long id) {
 		try {
-			UsersMiniDto userDto = convertToDto(usersService.findUserById(id).get());
+			final UsersMiniDto userDto = convertToDto(usersService.findUserById(id).get());
 			return ResponseEntity.ok().body(userDto);
 		} catch (Error ex) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new HashMap<>());

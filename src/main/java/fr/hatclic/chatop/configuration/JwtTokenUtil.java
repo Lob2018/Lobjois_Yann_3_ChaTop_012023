@@ -25,7 +25,7 @@ public class JwtTokenUtil {
 
 	private final Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
 
-	public String generateAccessToken(User autendicatedUser) {
+	public final String generateAccessToken(final User autendicatedUser) {
 		return Jwts.builder().setSubject(format("%s", 
 				autendicatedUser.getUsername()))
 				.setIssuer(jwtIssuer)
@@ -34,17 +34,17 @@ public class JwtTokenUtil {
 				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
 	}
 
-	public String getUsername(String token) {
-		Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+	public final String getUsername(final String token) {
+		final Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 		return claims.getSubject().split(",")[0];
 	}
 
-	public Date getExpirationDate(String token) {
-		Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+	public final Date getExpirationDate(final String token) {
+		final Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 		return claims.getExpiration();
 	}
 
-	public boolean validate(String token) {
+	public final boolean validate(final String token) {
 		try {
 			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
 			return true;

@@ -44,13 +44,13 @@ public class RentalsController {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	private RentalsDto convertToDto(final Rentals rental) {
-		RentalsDto rentalDto = modelMapper.map(rental, RentalsDto.class);
+	private final RentalsDto convertToDto(final Rentals rental) {
+		final RentalsDto rentalDto = modelMapper.map(rental, RentalsDto.class);
 		return rentalDto;
 	}
 
-	private Rentals convertToEntity(final RentalsDto rentalDto) {
-		Rentals rental = modelMapper.map(rentalDto, Rentals.class);
+	private final Rentals convertToEntity(final RentalsDto rentalDto) {
+		final Rentals rental = modelMapper.map(rentalDto, Rentals.class);
 		return rental;
 	}
 
@@ -60,7 +60,7 @@ public class RentalsController {
 	 * @return The HTTP response
 	 */
 	@GetMapping("")
-	public ResponseEntity<Object> getAll() {
+	public final ResponseEntity<Object> getAll() {
 		try {
 			final List<RentalsDto> rentalsDtoList = ((Collection<Rentals>) rentalsService.getAllRentals()).stream()
 					.map(this::convertToDto).collect(Collectors.toList());
@@ -79,9 +79,9 @@ public class RentalsController {
 	 * @return The HTTP response
 	 */
 	@GetMapping("/{rentalId}")
-	public ResponseEntity<Object> get(@PathVariable("rentalId") Long id) {
+	public final ResponseEntity<Object> get(@PathVariable("rentalId") Long id) {
 		try {
-			RentalsDto rentalDto = convertToDto(rentalsService.findRentalById(id).get());
+			final RentalsDto rentalDto = convertToDto(rentalsService.findRentalById(id).get());
 			return ResponseEntity.ok().body(rentalDto);
 		} catch (Error ex) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new HashMap<>());
@@ -100,13 +100,13 @@ public class RentalsController {
 	 */
 	@PostMapping("/**")
 	@ResponseBody
-	public ResponseEntity<Object> create(@RequestParam(required = false) MultipartFile picture,
+	public final ResponseEntity<Object> create(@RequestParam(required = false) MultipartFile picture,
 			@RequestParam("name") String name, @RequestParam("surface") double surface,
 			@RequestParam("price") double price, @RequestParam("description") String description) {
 		final String mail = SecurityContextHolder.getContext().getAuthentication().getName();
 		final Optional<Users> user = usersService.findByEmail(mail);
 		try {
-			RentalsDto rental = new RentalsDto();
+			final RentalsDto rental = new RentalsDto();
 			rental.setRentalsDto(null, name, surface, price, picture.getOriginalFilename(), description,
 					user.get().getId(), ZonedDateTime.now(), ZonedDateTime.now());
 			rentalsService.createRental(convertToEntity(rental));
@@ -132,15 +132,14 @@ public class RentalsController {
 	 */
 	@PutMapping("/{rentalId}")
 	@ResponseBody
-	public ResponseEntity<Object> put(@PathVariable("rentalId") Long id,
+	public final ResponseEntity<Object> put(@PathVariable("rentalId") Long id,
 			@RequestParam(required = false) MultipartFile picture, @RequestParam("name") String name,
 			@RequestParam("surface") double surface, @RequestParam("price") double price,
 			@RequestParam("description") String description) {
 		final String mail = SecurityContextHolder.getContext().getAuthentication().getName();
 		final Optional<Users> user = usersService.findByEmail(mail);
 		try {
-			RentalsDto rentalDto = convertToDto(rentalsService.findRentalById(id).get());
-			System.out.println(rentalDto.toString());
+			final RentalsDto rentalDto = convertToDto(rentalsService.findRentalById(id).get());
 			rentalDto.setRentalsDto(id, name, surface, price, picture == null ? null : picture.getOriginalFilename(),
 					description, user.get().getId(), ZonedDateTime.now(), ZonedDateTime.now());
 			rentalsService.updateRental(convertToEntity(rentalDto));

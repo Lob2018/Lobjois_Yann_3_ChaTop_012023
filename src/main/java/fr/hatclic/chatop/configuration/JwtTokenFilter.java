@@ -2,9 +2,6 @@ package fr.hatclic.chatop.configuration;
 
 import java.io.IOException;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,8 +18,6 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-	private Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
-
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
@@ -31,8 +25,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 	private CustomUserDetailsService customUserDetailsService;
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
+	protected final void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
+			final FilterChain filterChain) throws ServletException, IOException {
 		logger.info("Enter doFilterInternal JwtTokenFilter");
 
 		// Get authorization header and validate
@@ -45,18 +39,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 		// Get jwt token and validate
 		final String token = header.split(" ")[1].trim();
 
-		logger.info("Token received by filter is : " + token);
-
 		if (!jwtTokenUtil.validate(token)) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 
 		// Get user identity and set it on the spring security context
-		UserDetails userDetails = customUserDetailsService.loadUserByUsername(jwtTokenUtil.getUsername(token));
+		final UserDetails userDetails = customUserDetailsService.loadUserByUsername(jwtTokenUtil.getUsername(token));
 
-		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
-				userDetails == null ? List.of() : userDetails.getAuthorities());
+		final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
+				null, userDetails == null ? List.of() : userDetails.getAuthorities());
 
 		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

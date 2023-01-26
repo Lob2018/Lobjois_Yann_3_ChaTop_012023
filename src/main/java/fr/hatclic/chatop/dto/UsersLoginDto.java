@@ -6,37 +6,33 @@ public class UsersLoginDto {
 	private String password;
 	private String email;
 
-	public String getLogin() {
+	public final String getLogin() {
 		return login;
 	}
 
-	public void setLogin(String login) {
+	public final void setLogin(final String login) {
 		this.login = login;
 	}
 
-	public String getPassword() {
+	public final String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public final void setPassword(final String password) {
 		this.password = password;
-	}	
-	
-	public String getEmail() {
+	}
+
+	public final String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public final void setEmail(final String email) {
 		this.email = email;
 	}
 
 	@Override
-	public String toString() {
-		return "usersMiniDto{"
-	+ "login=" + login
-	+ "email=" + email
-	+ '\'' + ", password='" + password  
-	+ '}';
+	public final String toString() {
+		return "usersMiniDto{" + "login=" + login + "email=" + email + '\'' + ", password='" + password + '}';
 	}
 
 }

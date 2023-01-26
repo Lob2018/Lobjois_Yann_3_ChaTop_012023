@@ -14,8 +14,9 @@ public class RentalsDto {
 	private ZonedDateTime created_at;
 	private ZonedDateTime updated_at;
 
-	public void setRentalsDto(Long id, String name, double surface, double price, String picture, String description,
-			Long owner_id, ZonedDateTime created_at, ZonedDateTime updated_at) {
+	public final void setRentalsDto(final Long id, final String name, final double surface, final double price,
+			final String picture, final String description, final Long owner_id, final ZonedDateTime created_at,
+			final ZonedDateTime updated_at) {
 		this.id = id;
 		this.name = name;
 		this.surface = surface;
@@ -28,80 +29,80 @@ public class RentalsDto {
 		this.updated_at = updated_at;
 	}
 
-	public Long getId() {
+	public final Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public final void setId(final Long id) {
 		this.id = id;
 	}
 
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public final void setName(final String name) {
 		this.name = name;
 	}
 
-	public double getSurface() {
+	public final double getSurface() {
 		return surface;
 	}
 
-	public void setSurface(double surface) {
+	public final void setSurface(final double surface) {
 		this.surface = surface;
 	}
 
-	public double getPrice() {
+	public final double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public final void setPrice(final double price) {
 		this.price = price;
 	}
 
-	public String getPicture() {
+	public final String getPicture() {
 		return picture;
 	}
 
-	public void setPicture(String picture) {
+	public final void setPicture(final String picture) {
 		this.picture = picture;
 	}
 
-	public String getDescription() {
+	public final String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public final void setDescription(final String description) {
 		this.description = description;
 	}
 
-	public Long getOwner_id() {
+	public final Long getOwner_id() {
 		return owner_id;
 	}
 
-	public void setOwner_id(Long owner_id) {
+	public final void setOwner_id(final Long owner_id) {
 		this.owner_id = owner_id;
 	}
 
-	public ZonedDateTime getCreated_at() {
+	public final ZonedDateTime getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreated_at(ZonedDateTime created_at) {
+	public final void setCreated_at(final ZonedDateTime created_at) {
 		this.created_at = created_at;
 	}
 
-	public ZonedDateTime getUpdated_at() {
+	public final ZonedDateTime getUpdated_at() {
 		return updated_at;
 	}
 
-	public void setUpdated_at(ZonedDateTime updated_at) {
+	public final void setUpdated_at(final ZonedDateTime updated_at) {
 		this.updated_at = updated_at;
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		return "rentals{" + "id=" + id + '\'' + ", name='" + name + '\'' + ", surface='" + surface + '\'' + ", price='"
 				+ price + '\'' + ", picture='" + picture + '\'' + ", description='" + description + '\''
 				+ ", owner_id='" + owner_id + '\'' + ", created_at='" + created_at + '\'' + ", updated_at=" + updated_at

@@ -42,7 +42,7 @@ public class SecurityConfig {
 	/**
 	 * Swagger paths
 	 */
-	private static final String[] AUTH_WHITE_LIST = {
+	private final String[] AUTH_WHITE_LIST = {
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/v2/api-docs/**",
@@ -92,8 +92,8 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder,
-			UserDetailsService userDetailService) throws Exception {
+	public AuthenticationManager authenticationManager(final HttpSecurity http, final BCryptPasswordEncoder bCryptPasswordEncoder,
+			final UserDetailsService userDetailService) throws Exception {
 		return http.getSharedObject(AuthenticationManagerBuilder.class)
 				.userDetailsService(userDetailService)
 				.passwordEncoder(bCryptPasswordEncoder)

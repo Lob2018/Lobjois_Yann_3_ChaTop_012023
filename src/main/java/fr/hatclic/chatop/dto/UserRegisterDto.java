@@ -5,36 +5,33 @@ public class UserRegisterDto {
 	private String email;
 	private String password;
 
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public final void setName(final String name) {
 		this.name = name;
 	}
 
-	public String getEmail() {
+	public final String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public final void setEmail(final String email) {
 		this.email = email;
 	}
 
-	public String getPassword() {
+	public final String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public final void setPassword(final String password) {
 		this.password = password;
 	}
-	
+
 	@Override
-	public String toString() {
-		return "usersNormalDto{"
-	+ '\'' + ", email='" + email 
-	+ '\'' + ", name='" + name 
-	+ '\'' + ", password='"+ password 
-	+ '}';
+	public final String toString() {
+		return "usersNormalDto{" + '\'' + ", email='" + email + '\'' + ", name='" + name + '\'' + ", password='"
+				+ password + '}';
 	}
 }
