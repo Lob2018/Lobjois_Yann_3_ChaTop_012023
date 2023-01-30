@@ -140,6 +140,9 @@ public class RentalsController {
 		final Optional<Users> user = usersService.findByEmail(mail);
 		try {
 			final RentalsDto rentalDto = convertToDto(rentalsService.findRentalById(id).get());
+			// User id must be owner id
+			if (user.get().getId() != rentalDto.getOwner_id())
+				throw new Error();
 			rentalDto.setRentalsDto(id, name, surface, price, picture == null ? null : picture.getOriginalFilename(),
 					description, user.get().getId(), ZonedDateTime.now(), ZonedDateTime.now());
 			rentalsService.updateRental(convertToEntity(rentalDto));
