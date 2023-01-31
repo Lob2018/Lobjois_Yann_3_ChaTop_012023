@@ -1,9 +1,18 @@
 package fr.hatclic.chatop.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class UsersLoginDto {
 
+	@Size(max = 255)
 	private String login;
+
+	@NotBlank
+	@Size(max = 255)
 	private String password;
+
+	@Size(max = 255)
 	private String email;
 
 	public final String getLogin() {

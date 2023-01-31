@@ -107,14 +107,19 @@ public class AuthController {
 	 * 
 	 * @param user User login data
 	 * @return The HTTP response
+	 * @throws MethodArgumentNotValidException
 	 */
 	@PostMapping("/login")
 	public final ResponseEntity<Object> login(@RequestBody @Valid UsersLoginDto user) {
 		final HashMap<String, String> map = new HashMap<>();
 		try {
-			final Authentication authenticate = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(user.getLogin() == null ? user.getEmail() : user.getLogin(),
-							user.getPassword()));
+			final String email = user.getLogin() == null ? user.getEmail() : user.getLogin();
+			// login for Postman and email for Angular -> manual validation
+			if (email.trim().length() == 0) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+			}
+			final Authentication authenticate = authenticationManager
+					.authenticate(new UsernamePasswordAuthenticationToken(email, user.getPassword()));
 			final User autendicatedUser = (User) authenticate.getPrincipal();
 			final String token = jwtTokenUtil.generateAccessToken(autendicatedUser);
 			map.put("token", token);

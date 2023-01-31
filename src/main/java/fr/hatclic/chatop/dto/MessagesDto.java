@@ -1,9 +1,19 @@
 package fr.hatclic.chatop.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class MessagesDto {
 
+	@NotBlank
+	@Size(max = 2000)
 	private String message;
+
+	@NotNull
 	private Long rental_id;
+
+	@NotNull
 	private Long user_id;
 
 	public final String getMessage() {

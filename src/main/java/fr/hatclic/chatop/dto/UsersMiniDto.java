@@ -2,11 +2,21 @@ package fr.hatclic.chatop.dto;
 
 import java.time.ZonedDateTime;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class UsersMiniDto {
 
 	private Long id;
+	
+	@NotBlank
+	@Size(max = 255)
 	private String name;
+
+	@NotBlank
+	@Size(max = 255)
 	private String email;
+
 	private ZonedDateTime created_at;
 	private ZonedDateTime updated_at;
 
