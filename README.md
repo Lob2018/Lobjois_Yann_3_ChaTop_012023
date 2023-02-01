@@ -11,7 +11,7 @@ This project was generated with :
 
 </br>
 
-## Start the project (with Eclipse IDE)
+## Start the project (with Spring Tool Suite 4 IDE)
 
 </br>
 
@@ -19,22 +19,49 @@ Git clone:
 
 > git clone https://github.com/Lob2018/Lobjois_Yann_3_ChaTop_012023
 
-Add the user's environment variables (batch file with command prompt)
+</br>
 
-> Double clic on CHATOP_CREATE_ENVIRONMENT_VAR.bat and set the variables
+Set the user's environment variables (batch file with command prompt)
 
-*Those environment variables are needed to use this API (CHATOP_DROP_ENVIRONMENT_VAR.bat removes them)*
+> Double clic on `CHATOP_CREATE_ENVIRONMENT_VAR.bat`, to set the variables and note their values<span style="color:red;">*</span>
 
+[*Those environment variables are needed to use this API*](#user-environment-variables-details) 
 
-Start the API :
+(double clic on `CHATOP_DROP_ENVIRONMENT_VAR.bat` if you want to remove them after)
 
-> Open Eclipse IDE
+</br>
+
+MySQL version 8.0.31 (MySQL COmmunity Server - GPL) :
+
+> Port : 3306
+
+> Create the username and the password (<span style="color:red;">*</span>from noted values)
+
+> Create a new schema named : chatop
+
+> Give rights for this username on the chatop schema
+
+> Execute the queries from the script `src/main/resources/data.sql` for the chatop schema
+
+</br>
+
+Start the API with Spring Tool Suite 4 :
 
 > Right click on folder > Run as > Maven install (install Maven dependencies)
 
 > Boot dashboard > Select the project > Start the process (start the ChaTop API)
 
-### Properties
+</br>
+
+Front-end :
+
+> [With Postman](#postman-collection)
+or
+> [with the Angular application](https://github.com/OpenClassrooms-Student-Center/Developpez-le-back-end-en-utilisant-Java-et-Spring)
+
+</br>
+
+### API Properties
 
 > Tomcat port : 3001
 
@@ -50,11 +77,7 @@ Start the API :
 
 ### MySQL
 
-> Schema name : chatop
-
-> Port : 3306
-
-> SQL script for creating the schema is available `src/main/resources/data.sql`
+SQL script for creating the schema is available `src/main/resources/data.sql`
 
 </br>
 
@@ -70,7 +93,25 @@ https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#
 
 ### Swagger
 
-Swagger UI in HTML is available `http://localhost:3001/swagger-ui/index.html#/`
+Swagger UI in HTML is available at `http://localhost:3001/swagger-ui/index.html#/`
+
+</br>
+
+## User environment variables details ###
+
+</br>
+
+> Variable for MySQL password : `CHATOP_YL_API_MYSQL_PASSWORD`
+
+> Variable for MySQL username : `CHATOP_YL_API_MYSQL_USERNAME`
+
+> Variable for the JWT issuer : `CHATOP_YL_API_JWTISSUER`
+
+> Variable for the JWT secret : `CHATOP_YL_API_JWTSECRET`
+
+</br>
+
+---
 
 </br>
 
@@ -80,24 +121,12 @@ Swagger UI in HTML is available `http://localhost:3001/swagger-ui/index.html#/`
 
 > MySQL   : Run MySQL
 
-> Eclipse : Run ChaTop API
+> Spring Tool suite : Run ChaTop API
 
-> Postman : File import `rental.postman_collection.json`
+> Postman : File import `src/main/resources/rental.postman_collection.json`
 
 > Postman : auth > register > Send
 
+> Postman : The token is in the Body of the response with HTTP code 200
+
 > MySQL   : The user is created
-
-*Postman : The token is in the Body of the response*
-
-</br>
-
-## User environment variables details
-
-> Variable for MySQL password : CHATOP_YL_API_MYSQL_PASSWORD
-
-> Variable for MySQL username : CHATOP_YL_API_MYSQL_USERNAME
-
-> Variable for the JWT issuer : CHATOP_YL_API_JWTISSUER
-
-> Variable for the JWT secret : CHATOP_YL_API_JWTSECRET
