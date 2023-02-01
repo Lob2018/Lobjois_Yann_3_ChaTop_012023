@@ -23,7 +23,7 @@ Git clone:
 
 Set the user's environment variables (batch file with command prompt)
 
-> Double clic on `CHATOP_CREATE_ENVIRONMENT_VAR.bat`, to set the variables and note their values<span style="color:red;">*</span>
+> Double clic on `CHATOP_CREATE_ENVIRONMENT_VAR.bat`, to set the variables and note their values`*`
 
 [*Those environment variables are needed to use this API*](#user-environment-variables-details) 
 
@@ -35,7 +35,7 @@ MySQL version 8.0.31 (MySQL Community Server - GPL) :
 
 > Port : 3306
 
-> Create the username and the password (<span style="color:red;">*</span>from noted values)
+> Create the username and the password (`*`from noted values)
 
 > Create a new schema named : chatop
 
