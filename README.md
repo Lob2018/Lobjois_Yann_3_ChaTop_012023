@@ -31,7 +31,7 @@ Set the user's environment variables (batch file with command prompt)
 
 </br>
 
-MySQL version 8.0.31 (MySQL COmmunity Server - GPL) :
+MySQL version 8.0.31 (MySQL Community Server - GPL) :
 
 > Port : 3306
 
