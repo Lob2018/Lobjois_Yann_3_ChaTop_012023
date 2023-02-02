@@ -1,6 +1,7 @@
 package fr.hatclic.chatop.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,6 +39,9 @@ public class SecurityConfig {
 
 	@Autowired
 	private JwtTokenFilter jwtTokenFilter;
+	
+	@Value("${chatop.security.cors.origins}")
+	private String corsOrigins;
 	
 	/**
 	 * Swagger paths
@@ -79,7 +83,7 @@ public class SecurityConfig {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.addAllowedOrigin("http://localhost:4200");
+		config.addAllowedOrigin(corsOrigins);
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration("/**", config);
