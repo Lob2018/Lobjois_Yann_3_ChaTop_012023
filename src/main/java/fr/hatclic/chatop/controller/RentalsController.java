@@ -26,6 +26,7 @@ import fr.hatclic.chatop.model.Rentals;
 import fr.hatclic.chatop.model.Users;
 import fr.hatclic.chatop.service.RentalsService;
 import fr.hatclic.chatop.service.UsersService;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -79,7 +80,8 @@ public class RentalsController {
 	 * @return The HTTP response
 	 */
 	@GetMapping("/{rentalId}")
-	public final ResponseEntity<Object> get(@PathVariable("rentalId") Long id) {
+	public final ResponseEntity<Object> get(
+			@Parameter(description = "The rental ID to get") @PathVariable("rentalId") Long id) {
 		try {
 			final RentalsDto rentalDto = convertToDto(rentalsService.findRentalById(id).get());
 			return ResponseEntity.ok().body(rentalDto);
@@ -132,7 +134,8 @@ public class RentalsController {
 	 */
 	@PutMapping("/{rentalId}")
 	@ResponseBody
-	public final ResponseEntity<Object> put(@PathVariable("rentalId") Long id,
+	public final ResponseEntity<Object> put(
+			@Parameter(description = "The rental ID to update") @PathVariable("rentalId") Long id,
 			@RequestParam(required = false) MultipartFile picture, @RequestParam("name") String name,
 			@RequestParam("surface") double surface, @RequestParam("price") double price,
 			@RequestParam("description") String description) {

@@ -33,6 +33,9 @@ public class MessagesController {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	private final String messageRequestBodyDescription = "<b>message</b> : The message to send for the rental<br />"
+			+ "<b>rental_id</b> &nbsp;: The rental ID<br />" + "<b>user_id</b> &nbsp;&nbsp;&nbsp;: The sender ID<br />";
+
 	private final Messages convertToEntity(final MessagesDto messageDto) {
 		final Messages message = modelMapper.map(messageDto, Messages.class);
 		return message;
@@ -46,7 +49,8 @@ public class MessagesController {
 	 */
 	@PostMapping("/**")
 	@ResponseBody
-	public final ResponseEntity<Object> message(@RequestBody @Valid MessagesDto messageDto) {
+	public final ResponseEntity<Object> message(
+			@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(description = messageRequestBodyDescription) @Valid MessagesDto messageDto) {
 		final HashMap<String, Object> map = new HashMap<>();
 		try {
 			final Messages message = convertToEntity(messageDto);

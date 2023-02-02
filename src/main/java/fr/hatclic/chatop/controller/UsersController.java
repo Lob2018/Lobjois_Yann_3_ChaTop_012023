@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.hatclic.chatop.dto.UsersMiniDto;
 import fr.hatclic.chatop.model.Users;
 import fr.hatclic.chatop.service.UsersService;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -41,7 +42,8 @@ public class UsersController {
 	 * @return The HTTP response
 	 */
 	@GetMapping("/{userId}")
-	public final ResponseEntity<Object> getUserAccount(@PathVariable("userId") Long id) {
+	public final ResponseEntity<Object> getUserAccount(
+			@Parameter(description = "The user ID to get") @PathVariable("userId") Long id) {
 		try {
 			final UsersMiniDto userDto = convertToDto(usersService.findUserById(id).get());
 			return ResponseEntity.ok().body(userDto);
