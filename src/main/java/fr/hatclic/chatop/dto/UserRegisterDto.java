@@ -43,7 +43,7 @@ public class UserRegisterDto {
 
 	@Override
 	public final String toString() {
-		return "usersNormalDto{" + '\'' + ", email='" + email + '\'' + ", name='" + name + '\'' + ", password='"
+		return "usersRegisterlDto{" + '\'' + ", email='" + email + '\'' + ", name='" + name + '\'' + ", password='"
 				+ password + '}';
 	}
 }

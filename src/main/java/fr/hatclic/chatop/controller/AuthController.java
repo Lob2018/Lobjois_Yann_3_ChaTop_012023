@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.hatclic.chatop.configuration.JwtTokenUtil;
 import fr.hatclic.chatop.dto.UserRegisterDto;
 import fr.hatclic.chatop.dto.UsersLoginDto;
-import fr.hatclic.chatop.dto.UsersNormalDto;
+import fr.hatclic.chatop.dto.UsersMiniDto;
 import fr.hatclic.chatop.model.Users;
 import fr.hatclic.chatop.service.UsersService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -48,8 +48,8 @@ public class AuthController {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	private final UsersNormalDto convertToDto(final Users user) {
-		return modelMapper.map(user, UsersNormalDto.class);
+	private final UsersMiniDto convertToDto(final Users user) {
+		return modelMapper.map(user, UsersMiniDto.class);
 	}
 
 	private final Users convertToEntity(final UserRegisterDto userRegisterDto) {
