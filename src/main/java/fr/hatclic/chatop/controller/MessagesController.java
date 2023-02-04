@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.hatclic.chatop.dto.MessagesDto;
 import fr.hatclic.chatop.model.Messages;
 import fr.hatclic.chatop.service.MessagesService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -49,6 +53,11 @@ public class MessagesController {
 	 */
 	@PostMapping("/**")
 	@ResponseBody
+	@Operation(description = "Send a message")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(type = "object", defaultValue = "{\r\n"
+			+ "  \"message\": \"Message send with success\"\r\n" + "}")), responseCode = "200")
+	@ApiResponse(content = @Content(schema = @Schema(defaultValue = "")), responseCode = "401", description = "Unauthorized")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(type = "object", defaultValue = "{}")), responseCode = "400", description = "Bad Request")
 	public final ResponseEntity<Object> message(
 			@RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(description = messageRequestBodyDescription) @Valid MessagesDto messageDto) {
 		final HashMap<String, Object> map = new HashMap<>();

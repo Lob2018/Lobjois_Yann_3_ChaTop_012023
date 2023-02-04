@@ -29,6 +29,10 @@ import fr.hatclic.chatop.dto.UsersLoginDto;
 import fr.hatclic.chatop.dto.UsersMiniDto;
 import fr.hatclic.chatop.model.Users;
 import fr.hatclic.chatop.service.UsersService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -66,6 +70,10 @@ public class AuthController {
 	 */
 	@PostMapping("/register")
 	@ResponseBody
+	@Operation(description = "Register a user")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(type = "object", defaultValue = "{\r\n"
+			+ "  \"token\": \"jwt\"\r\n" + "}")), responseCode = "200")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(type = "object", defaultValue = "{}")), responseCode = "400", description = "Bad Request")
 	public final ResponseEntity<Object> register(@RequestBody @Valid UserRegisterDto userRegistering) {
 		final HashMap<String, String> map = new HashMap<>();
 		try {
@@ -91,13 +99,19 @@ public class AuthController {
 	 * @return The HTTP response
 	 */
 	@GetMapping("/me")
+	@Operation(description = "Get user information")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(implementation = UsersMiniDto.class)), responseCode = "200")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(type = "object", defaultValue = "{}")), responseCode = "401", description = "Unauthorized")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(type = "object", defaultValue = "{}")), responseCode = "400", description = "Bad Request")
 	@SecurityRequirement(name = "bearerAuth")
 	public final ResponseEntity<Object> me(@RequestHeader(name = "Authorization") String token) {
-		final String mail = SecurityContextHolder.getContext().getAuthentication().getName();
-		final Optional<Users> user = usersService.findByEmail(mail);
-		if (user.isPresent()) {
-			return ResponseEntity.ok().body(convertToDto(user.get()));
-		} else {
+		try {
+			final String mail = SecurityContextHolder.getContext().getAuthentication().getName();
+			final Optional<Users> user = usersService.findByEmail(mail);
+			if (user.isPresent())
+				return ResponseEntity.ok().body(convertToDto(user.get()));
+			throw new Error();
+		} catch (Error ex) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new HashMap<>());
 		}
 	}
@@ -110,6 +124,12 @@ public class AuthController {
 	 * @throws MethodArgumentNotValidException
 	 */
 	@PostMapping("/login")
+	@Operation(description = "User login")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(type = "object", defaultValue = "{\r\n"
+			+ "  \"token\": \"jwt\"\r\n" + "}")), responseCode = "200")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(type = "object", defaultValue = "{\r\n"
+			+ "  \"message\": \"error\"\r\n" + "}")), responseCode = "401", description = "Unauthorized")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(type = "object", defaultValue = "{}")), responseCode = "400", description = "Bad Request")
 	public final ResponseEntity<Object> login(@RequestBody @Valid UsersLoginDto user) {
 		final HashMap<String, String> map = new HashMap<>();
 		try {

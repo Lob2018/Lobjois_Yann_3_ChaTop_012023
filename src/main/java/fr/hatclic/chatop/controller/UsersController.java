@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import fr.hatclic.chatop.dto.UsersMiniDto;
 import fr.hatclic.chatop.model.Users;
 import fr.hatclic.chatop.service.UsersService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -42,6 +45,9 @@ public class UsersController {
 	 * @return The HTTP response
 	 */
 	@GetMapping("/{userId}")
+	@Operation(description = "Get a user by id")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(implementation = UsersMiniDto.class)), responseCode = "200")
+	@ApiResponse(content = @Content(schema = @Schema(defaultValue = "")), responseCode = "401", description = "Unauthorized")
 	public final ResponseEntity<Object> getUserAccount(
 			@Parameter(description = "The user ID to get") @PathVariable("userId") Long id) {
 		try {

@@ -26,9 +26,13 @@ import fr.hatclic.chatop.model.Rentals;
 import fr.hatclic.chatop.model.Users;
 import fr.hatclic.chatop.service.RentalsService;
 import fr.hatclic.chatop.service.UsersService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("/api/rentals")
@@ -61,6 +65,15 @@ public class RentalsController {
 	 * @return The HTTP response
 	 */
 	@GetMapping("")
+	@Operation(description = "List all rentals")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(type = "object", defaultValue = "{ \r\n"
+			+ "  \"rentals\": [\r\n" + "  {\r\n" + "	\"id\": 1,\r\n" + "	\"name\": \"test house 1\",\r\n"
+			+ "	\"surface\": 432,\r\n" + "	\"price\": 300,\r\n"
+			+ "	\"picture\": \"https://blog.technavio.org/wp-content/uploads/2018/12/Online-House-Rental-Sites.jpg\",\r\n"
+			+ "	\"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit.\",\r\n"
+			+ "	\"owner_id\": 1,\r\n" + "	\"created_at\": \"2012/12/02\",\r\n"
+			+ "	\"updated_at\": \"2014/12/02\"  \r\n" + "}  \r\n" + "  ]\r\n" + "}")), responseCode = "200")
+	@ApiResponse(content = @Content(schema = @Schema(defaultValue = "")), responseCode = "401", description = "Unauthorized")
 	public final ResponseEntity<Object> getAll() {
 		try {
 			final List<RentalsDto> rentalsDtoList = ((Collection<Rentals>) rentalsService.getAllRentals()).stream()
@@ -80,6 +93,9 @@ public class RentalsController {
 	 * @return The HTTP response
 	 */
 	@GetMapping("/{rentalId}")
+	@Operation(description = "Get a rental by id")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(implementation = RentalsDto.class)), responseCode = "200")
+	@ApiResponse(content = @Content(schema = @Schema(defaultValue = "")), responseCode = "401", description = "Unauthorized")
 	public final ResponseEntity<Object> get(
 			@Parameter(description = "The rental ID to get") @PathVariable("rentalId") Long id) {
 		try {
@@ -102,6 +118,10 @@ public class RentalsController {
 	 */
 	@PostMapping("/**")
 	@ResponseBody
+	@Operation(description = "Create a rental")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(type = "object", defaultValue = "{\r\n"
+			+ "  \"message\": \"Rental created !\"\r\n" + "}")), responseCode = "200")
+	@ApiResponse(content = @Content(schema = @Schema(defaultValue = "")), responseCode = "401", description = "Unauthorized")
 	public final ResponseEntity<Object> create(@RequestParam(required = false) MultipartFile picture,
 			@RequestParam("name") String name, @RequestParam("surface") double surface,
 			@RequestParam("price") double price, @RequestParam("description") String description) {
@@ -134,6 +154,10 @@ public class RentalsController {
 	 */
 	@PutMapping("/{rentalId}")
 	@ResponseBody
+	@Operation(description = "Update a rental by id")
+	@ApiResponse(content = @Content(mediaType = "application/json", schema = @Schema(type = "object", defaultValue = "{\r\n"
+			+ "  \"message\": \"Rental updated !\"\r\n" + "}")), responseCode = "200")
+	@ApiResponse(content = @Content(schema = @Schema(defaultValue = "")), responseCode = "401", description = "Unauthorized")
 	public final ResponseEntity<Object> put(
 			@Parameter(description = "The rental ID to update") @PathVariable("rentalId") Long id,
 			@RequestParam(required = false) MultipartFile picture, @RequestParam("name") String name,
