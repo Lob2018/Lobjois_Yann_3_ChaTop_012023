@@ -1,4 +1,4 @@
-package fr.hatclic.chatop.dto;
+package fr.hatclic.chatop.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
