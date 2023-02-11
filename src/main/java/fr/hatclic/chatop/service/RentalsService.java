@@ -1,9 +1,15 @@
 package fr.hatclic.chatop.service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import fr.hatclic.chatop.model.Rentals;
 import fr.hatclic.chatop.repository.RentalsRepository;
 
@@ -13,9 +19,23 @@ public class RentalsService {
 	@Autowired
 	private RentalsRepository rentalsRepository;
 
-	public final Rentals createRental(final Rentals rental) {
+	@Value("${chatop.service.local.httpserver.path}")
+	private String httpserverPath;
+
+	// The user's environment variable
+	@Value("${CHATOP_YL_LOCAL_PATH_FOLDER}")
+	private String folderPath;
+
+	public final Rentals createRental(final Rentals rental, MultipartFile picture) throws IOException {
 		if (rentalIsNull(rental))
 			throw new Error();
+		if ((rental.getPicture().trim().length() != 0 && isAPitcure(picture))) {
+			final String path = localPiturePath(picture);
+			if (path != null)
+				rental.setPicture(path);
+		} else {
+			throw new Error();
+		}
 		return rentalsRepository.save(rental);
 	}
 
@@ -30,9 +50,14 @@ public class RentalsService {
 		return rentalsRepository.findAll();
 	}
 
-	public final Rentals updateRental(final Rentals rental) {
+	public final Rentals updateRental(final Rentals rental, MultipartFile picture) throws IOException {
 		if (rentalIsNull(rental) || rental.getId() == null)
 			throw new Error();
+		if ((rental.getPicture().trim().length() != 0 && isAPitcure(picture))) {
+			rental.setPicture(localPiturePath(picture));
+		} else {
+			throw new Error();
+		}
 		return rentalsRepository.save(rental);
 	}
 
@@ -50,6 +75,24 @@ public class RentalsService {
 			return true;
 		}
 		return false;
+	}
+
+	public final boolean isAPitcure(final MultipartFile picture) {
+		final String mimeType = picture.getContentType();
+		if (mimeType != null && (mimeType.equals("image/png") || mimeType.equals("image/jpeg"))) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public final String localPiturePath(final MultipartFile picture) throws IOException {
+		File path = new File(folderPath + "/" + picture.getOriginalFilename());
+		path.createNewFile();
+		FileOutputStream output = new FileOutputStream(path);
+		output.write(picture.getBytes());
+		output.close();
+		return httpserverPath + picture.getOriginalFilename();
 	}
 
 }

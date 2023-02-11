@@ -1,6 +1,7 @@
 
 package fr.hatclic.chatop.controller;
 
+import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.HashMap;
@@ -131,12 +132,15 @@ public class RentalsController {
 			final RentalsDto rental = new RentalsDto();
 			rental.setRentalsDto(null, name, surface, price, picture.getOriginalFilename(), description,
 					user.get().getId(), ZonedDateTime.now(), ZonedDateTime.now());
-			rentalsService.createRental(convertToEntity(rental));
+			rentalsService.createRental(convertToEntity(rental), picture);
 			final HashMap<String, String> map = new HashMap<>();
 			map.put("message", "Rental created !");
 			return ResponseEntity.ok().body(map);
 		} catch (Error ex) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new HashMap<>());
+		} catch (IOException e) {
+			// for IOException with the local pictures
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new HashMap<>());
 		}
 	}
 
@@ -172,12 +176,15 @@ public class RentalsController {
 				throw new Error();
 			rentalDto.setRentalsDto(id, name, surface, price, picture == null ? null : picture.getOriginalFilename(),
 					description, user.get().getId(), ZonedDateTime.now(), ZonedDateTime.now());
-			rentalsService.updateRental(convertToEntity(rentalDto));
+			rentalsService.updateRental(convertToEntity(rentalDto), picture);
 			final HashMap<String, String> map = new HashMap<>();
 			map.put("message", "Rental updated !");
 			return ResponseEntity.ok().body(map);
 		} catch (Error ex) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new HashMap<>());
+		} catch (IOException e) {
+			// for IOException with the local pictures
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new HashMap<>());
 		}
 	}
 }
