@@ -130,8 +130,8 @@ public class RentalsController {
 		final Optional<Users> user = usersService.findByEmail(mail);
 		try {
 			final RentalsDto rental = new RentalsDto();
-			rental.setRentalsDto(null, name, surface, price, picture.getOriginalFilename(), description,
-					user.get().getId(), ZonedDateTime.now(), ZonedDateTime.now());
+			rental.setRentalsDto(null, name, surface, price, picture == null ? null : picture.getOriginalFilename(),
+					description, user.get().getId(), ZonedDateTime.now(), ZonedDateTime.now());
 			rentalsService.createRental(convertToEntity(rental), picture);
 			final HashMap<String, String> map = new HashMap<>();
 			map.put("message", "Rental created !");
