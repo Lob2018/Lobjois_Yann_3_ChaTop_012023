@@ -14,4 +14,10 @@
     "type": "java.lang.String",
     "description": "The path to the local folder to store pictures"
   }
+  ,
+  {
+    "name": "chatop.service.default.picture",
+    "type": "java.lang.String",
+    "description": "The default picture if empty"
+  }
 ]}

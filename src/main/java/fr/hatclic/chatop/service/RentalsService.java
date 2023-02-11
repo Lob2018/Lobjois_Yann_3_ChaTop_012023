@@ -22,6 +22,9 @@ public class RentalsService {
 	@Value("${chatop.service.local.httpserver.path}")
 	private String httpserverPath;
 
+	@Value("${chatop.service.default.picture}")
+	private String defaultPicture;
+
 	// The user's environment variable
 	@Value("${CHATOP_YL_LOCAL_PATH_FOLDER}")
 	private String folderPath;
@@ -29,8 +32,10 @@ public class RentalsService {
 	public final Rentals createRental(final Rentals rental, MultipartFile picture) throws IOException {
 		if (rentalIsNull(rental))
 			throw new Error();
-		if (picture == null)
+		if (picture == null) {
+			rental.setPicture(defaultPicture);
 			return rentalsRepository.save(rental);
+		}
 		if (rental.getPicture().trim().length() != 0 && isAPitcure(picture)) {
 			final String path = localPiturePath(picture);
 			if (path != null)
@@ -55,8 +60,10 @@ public class RentalsService {
 	public final Rentals updateRental(final Rentals rental, MultipartFile picture) throws IOException {
 		if (rentalIsNull(rental) || rental.getId() == null)
 			throw new Error();
-		if (picture == null)
+		if (picture == null) {
+			rental.setPicture(defaultPicture);
 			return rentalsRepository.save(rental);
+		}
 		if (rental.getPicture().trim().length() != 0 && isAPitcure(picture)) {
 			final String path = localPiturePath(picture);
 			if (path != null)
