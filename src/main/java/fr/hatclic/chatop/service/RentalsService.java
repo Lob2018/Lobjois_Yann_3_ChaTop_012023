@@ -29,7 +29,9 @@ public class RentalsService {
 	public final Rentals createRental(final Rentals rental, MultipartFile picture) throws IOException {
 		if (rentalIsNull(rental))
 			throw new Error();
-		if ((rental.getPicture().trim().length() != 0 && isAPitcure(picture))) {
+		if (picture == null)
+			return rentalsRepository.save(rental);
+		if (rental.getPicture().trim().length() != 0 && isAPitcure(picture)) {
 			final String path = localPiturePath(picture);
 			if (path != null)
 				rental.setPicture(path);
@@ -53,8 +55,12 @@ public class RentalsService {
 	public final Rentals updateRental(final Rentals rental, MultipartFile picture) throws IOException {
 		if (rentalIsNull(rental) || rental.getId() == null)
 			throw new Error();
-		if ((rental.getPicture().trim().length() != 0 && isAPitcure(picture))) {
-			rental.setPicture(localPiturePath(picture));
+		if (picture == null)
+			return rentalsRepository.save(rental);
+		if (rental.getPicture().trim().length() != 0 && isAPitcure(picture)) {
+			final String path = localPiturePath(picture);
+			if (path != null)
+				rental.setPicture(path);
 		} else {
 			throw new Error();
 		}
