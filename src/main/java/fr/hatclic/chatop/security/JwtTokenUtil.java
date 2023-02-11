@@ -1,4 +1,4 @@
-package fr.hatclic.chatop.configuration;
+package fr.hatclic.chatop.security;
 
 import java.util.Date;
 

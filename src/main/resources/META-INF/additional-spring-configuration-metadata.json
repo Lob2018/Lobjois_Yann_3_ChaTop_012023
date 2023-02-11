@@ -1,5 +1,17 @@
-{"properties": [{
-  "name": "chatop.security.cors.origins",
-  "type": "java.lang.String",
-  "description": "A comma-separated list of origins for which CORS requests are allowed"
-}]}
+{"properties": [
+  {
+    "name": "chatop.security.cors.origins",
+    "type": "java.lang.String",
+    "description": "A comma-separated list of origins for which CORS requests are allowed"
+  },
+  {
+    "name": "chatop.service.local.httpserver.path",
+    "type": "java.lang.String",
+    "description": "The path to http-server to retrieve the images"
+  },
+  {
+    "name": "chatop.service.local.folder.path",
+    "type": "java.lang.String",
+    "description": "The path to the local folder to store pictures"
+  }
+]}

@@ -23,11 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import fr.hatclic.chatop.configuration.JwtTokenUtil;
+
 import fr.hatclic.chatop.dto.UserRegisterDto;
 import fr.hatclic.chatop.dto.UsersLoginDto;
 import fr.hatclic.chatop.dto.UsersMiniDto;
 import fr.hatclic.chatop.model.Users;
+import fr.hatclic.chatop.security.JwtTokenUtil;
 import fr.hatclic.chatop.service.UsersService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
